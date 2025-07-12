@@ -4,43 +4,83 @@ using UnityEngine.AI;
 public class KnightBehavior : MonoBehaviour
 {
     public Transform witch;
-    public float runSpeed = 3.5f;
-    private float timeSeen = 0f;
-    private bool isSeen = false;
-    private bool isPossessed = false;
+    public float chaseRange = 10f;
+    public float patrolSpeed = 2f;
+    public float chaseSpeed = 3.5f;
+    public Transform leftPoint;
+    public Transform rightPoint;
 
     private NavMeshAgent agent;
+    private bool isChasing = false;
+    private bool isPossessed = false;
+    private float seenTimer = 0f;
+    private Transform currentTarget;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        currentTarget = rightPoint;
+        agent.speed = patrolSpeed;
+        GoToNextPatrolPoint();
     }
 
     void Update()
     {
-        if (isSeen && !isPossessed)
+        if (isPossessed)
         {
-            timeSeen += Time.deltaTime;
-            agent.SetDestination(witch.position);
+            agent.isStopped = true;
+            return;
+        }
 
-            if (timeSeen >= 3f)
+        float distanceToWitch = Vector3.Distance(transform.position, witch.position);
+
+        // Start chasing if Witch is close
+        if (distanceToWitch < chaseRange && !isChasing)
+        {
+            isChasing = true;
+            seenTimer = 0f;
+            agent.speed = chaseSpeed;
+        }
+
+        if (isChasing)
+        {
+            agent.SetDestination(witch.position);
+            seenTimer += Time.deltaTime;
+
+            if (seenTimer >= 3f)
             {
-                PossessKnight();
+                isPossessed = true;
+                Debug.Log("✅ Knight Possessed!");
+                // TODO: Add control transfer logic
             }
+        }
+        else
+        {
+            Patrol();
+        }
+    }
+
+    void Patrol()
+    {
+        // If close enough to current patrol target
+        if (!agent.pathPending && agent.remainingDistance < 0.3f)
+        {
+            currentTarget = (currentTarget == leftPoint) ? rightPoint : leftPoint;
+            GoToNextPatrolPoint();
+        }
+    }
+
+    void GoToNextPatrolPoint()
+    {
+        if (currentTarget != null)
+        {
+            agent.speed = patrolSpeed;
+            agent.SetDestination(currentTarget.position);
         }
     }
 
     public void SeenByWitch()
     {
-        isSeen = true;
-    }
-
-    void PossessKnight()
-    {
-        isPossessed = true;
-        agent.isStopped = true;
-        Debug.Log("👁️ Knight possessed!");
-        // Optionally add visual or sound effect here
-        // TODO: Enable player control of knight here
+        isChasing = true;
     }
 }
