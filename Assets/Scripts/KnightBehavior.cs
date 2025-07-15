@@ -16,9 +16,13 @@ public class KnightBehavior : MonoBehaviour
     private float seenTimer = 0f;
     private Transform currentTarget;
 
+    private Animator knightAnimator;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        knightAnimator = GetComponentInChildren<Animator>();
+
         currentTarget = rightPoint;
         agent.speed = patrolSpeed;
         GoToNextPatrolPoint();
@@ -29,12 +33,13 @@ public class KnightBehavior : MonoBehaviour
         if (isPossessed)
         {
             agent.isStopped = true;
+            UpdateAnimation();  // Ensure animation reflects stopped state
             return;
         }
 
         float distanceToWitch = Vector3.Distance(transform.position, witch.position);
 
-        // Start chasing if Witch is close
+        // Start chasing if within range
         if (distanceToWitch < chaseRange && !isChasing)
         {
             isChasing = true;
@@ -51,18 +56,19 @@ public class KnightBehavior : MonoBehaviour
             {
                 isPossessed = true;
                 Debug.Log("✅ Knight Possessed!");
-                // TODO: Add control transfer logic
+                // Possession logic can go here if needed
             }
         }
         else
         {
             Patrol();
         }
+
+        UpdateAnimation();
     }
 
     void Patrol()
     {
-        // If close enough to current patrol target
         if (!agent.pathPending && agent.remainingDistance < 0.3f)
         {
             currentTarget = (currentTarget == leftPoint) ? rightPoint : leftPoint;
@@ -76,6 +82,15 @@ public class KnightBehavior : MonoBehaviour
         {
             agent.speed = patrolSpeed;
             agent.SetDestination(currentTarget.position);
+        }
+    }
+
+    void UpdateAnimation()
+    {
+        bool isWalking = agent.velocity.magnitude > 0.1f;
+        if (knightAnimator != null)
+        {
+            knightAnimator.SetBool("isWalking", isWalking);
         }
     }
 

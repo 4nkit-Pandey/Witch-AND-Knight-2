@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\PlayerSwitcher.cs" />
     <Compile Include="Assets\Scripts\KnightBehavior.cs" />
     <Compile Include="Assets\Scripts\TestTrigger.cs" />
+    <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\WitchVision.cs" />
     <Compile Include="Assets\Scripts\ControlManager.cs" />
     <Compile Include="Assets\Scripts\KnightAI.cs" />
