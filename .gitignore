@@ -1,0 +1,75 @@
+# =====================
+# Unity project ignores
+# =====================
+
+# Ignore system folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+MemoryCaptures/
+CrashReports/
+UserSettings/
+
+# IDEs and text editors
+.vscode/
+.idea/
+*.sln
+*.csproj
+*.pidb
+*.user
+*.userprefs
+
+# Auto-generated Unity files
+*.unityproj
+*.booproj
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+
+# Visual Studio cache
+.vs/
+
+# Rider cache
+*.sln.iml
+
+# Exclude generated builds
+*.apk
+*.aab
+*.exe
+*.app
+*.dll
+*.pdb
+
+# ===========================
+# Allow critical Unity assets
+# ===========================
+
+# Allow all assets and subfolders
+!Assets/
+!Assets/**
+
+# Allow .meta files (required for GUIDs and linking)
+!*.meta
+!Assets/**/*.meta
+!ProjectSettings/**/*.meta
+
+# Allow scenes, prefabs, animations, controllers, models
+!Assets/**/*.unity
+!Assets/**/*.prefab
+!Assets/**/*.fbx
+!Assets/**/*.obj
+!Assets/**/*.blend
+!Assets/**/*.anim
+!Assets/**/*.controller
+!Assets/**/*.mat
+!Assets/**/*.png
+!Assets/**/*.jpg
+!Assets/**/*.shader
+
+# Allow project settings
+!ProjectSettings/
+!ProjectSettings/**/*.asset
