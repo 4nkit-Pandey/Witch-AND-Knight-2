@@ -9,7 +9,6 @@ public class KnightBehavior : MonoBehaviour
     public float chaseSpeed = 3.5f;
     public Transform leftPoint;
     public Transform rightPoint;
-    public Animator knightAnimator;          // ✅ drag KnightModel's Animator here
 
     private NavMeshAgent agent;
     private bool isChasing = false;
@@ -17,9 +16,13 @@ public class KnightBehavior : MonoBehaviour
     private float seenTimer = 0f;
     private Transform currentTarget;
 
+    private Animator knightAnimator;
+
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();  // ✅ make sure this is on KnightFPS
+        agent = GetComponent<NavMeshAgent>();
+        knightAnimator = GetComponentInChildren<Animator>();
+
         currentTarget = rightPoint;
         agent.speed = patrolSpeed;
         GoToNextPatrolPoint();
@@ -30,12 +33,13 @@ public class KnightBehavior : MonoBehaviour
         if (isPossessed)
         {
             agent.isStopped = true;
-            knightAnimator.SetBool("isWalking", false);
+            UpdateAnimation();  // Ensure animation reflects stopped state
             return;
         }
 
         float distanceToWitch = Vector3.Distance(transform.position, witch.position);
 
+        // Start chasing if within range
         if (distanceToWitch < chaseRange && !isChasing)
         {
             isChasing = true;
@@ -52,7 +56,7 @@ public class KnightBehavior : MonoBehaviour
             {
                 isPossessed = true;
                 Debug.Log("✅ Knight Possessed!");
-                // You can trigger control transfer here
+                // Possession logic can go here if needed
             }
         }
         else
@@ -60,9 +64,7 @@ public class KnightBehavior : MonoBehaviour
             Patrol();
         }
 
-        // ✅ Updated animation control based on agent velocity
-        bool isWalking = agent.velocity.magnitude > 0.1f && !isPossessed;
-        knightAnimator.SetBool("isWalking", isWalking);
+        UpdateAnimation();
     }
 
     void Patrol()
@@ -80,6 +82,15 @@ public class KnightBehavior : MonoBehaviour
         {
             agent.speed = patrolSpeed;
             agent.SetDestination(currentTarget.position);
+        }
+    }
+
+    void UpdateAnimation()
+    {
+        bool isWalking = agent.velocity.magnitude > 0.1f;
+        if (knightAnimator != null)
+        {
+            knightAnimator.SetBool("isWalking", isWalking);
         }
     }
 
