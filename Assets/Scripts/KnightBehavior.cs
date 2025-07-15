@@ -9,6 +9,7 @@ public class KnightBehavior : MonoBehaviour
     public float chaseSpeed = 3.5f;
     public Transform leftPoint;
     public Transform rightPoint;
+    public Animator knightAnimator;          // ✅ drag KnightModel's Animator here
 
     private NavMeshAgent agent;
     private bool isChasing = false;
@@ -16,22 +17,12 @@ public class KnightBehavior : MonoBehaviour
     private float seenTimer = 0f;
     private Transform currentTarget;
 
-    private Animator knightAnimator;
-
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();  // ✅ make sure this is on KnightFPS
         currentTarget = rightPoint;
         agent.speed = patrolSpeed;
         GoToNextPatrolPoint();
-
-        knightAnimator = GetComponentInChildren<Animator>();
-
-        // Warn if Root Motion is accidentally ON
-        if (knightAnimator != null && knightAnimator.applyRootMotion)
-        {
-            Debug.LogWarning("⚠️ Knight Animator has Root Motion enabled! Please disable it for proper NavMeshAgent animation control.");
-        }
     }
 
     void Update()
@@ -39,20 +30,17 @@ public class KnightBehavior : MonoBehaviour
         if (isPossessed)
         {
             agent.isStopped = true;
-            SetWalking(false);  // stop animation too
+            knightAnimator.SetBool("isWalking", false);
             return;
         }
 
         float distanceToWitch = Vector3.Distance(transform.position, witch.position);
 
-        // Start chasing if Witch is close
         if (distanceToWitch < chaseRange && !isChasing)
         {
             isChasing = true;
             seenTimer = 0f;
             agent.speed = chaseSpeed;
-            agent.isStopped = false;
-            Debug.Log("👀 Witch detected — Knight starts chasing!");
         }
 
         if (isChasing)
@@ -64,9 +52,7 @@ public class KnightBehavior : MonoBehaviour
             {
                 isPossessed = true;
                 Debug.Log("✅ Knight Possessed!");
-                agent.velocity = Vector3.zero;
-                agent.isStopped = true;
-                SetWalking(false);
+                // You can trigger control transfer here
             }
         }
         else
@@ -74,18 +60,13 @@ public class KnightBehavior : MonoBehaviour
             Patrol();
         }
 
-        // 🔄 Animation update
-        if (!isPossessed)
-        {
-            SetWalking(agent.velocity.magnitude > 0.1f);
-        }
+        // ✅ Updated animation control based on agent velocity
+        bool isWalking = agent.velocity.magnitude > 0.1f && !isPossessed;
+        knightAnimator.SetBool("isWalking", isWalking);
     }
 
     void Patrol()
     {
-        if (agent.isStopped)
-            agent.isStopped = false;
-
         if (!agent.pathPending && agent.remainingDistance < 0.3f)
         {
             currentTarget = (currentTarget == leftPoint) ? rightPoint : leftPoint;
@@ -105,13 +86,5 @@ public class KnightBehavior : MonoBehaviour
     public void SeenByWitch()
     {
         isChasing = true;
-    }
-
-    void SetWalking(bool state)
-    {
-        if (knightAnimator != null)
-        {
-            knightAnimator.SetBool("isWalking", state);
-        }
     }
 }
