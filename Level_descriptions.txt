@@ -1,0 +1,17 @@
+Level 1 (tutorial)
+
+The witch possesses the knight, the knight turns on the switch, the gate opens and the witch can escape (Simple tutorial level)
+
+
+Level 2 (small window)
+
+The witch possesses the knight , the knight flips the switch , the switch opens up a small window through which the witch can see a second knight, the witch possesses the second knight, the second knight goes out of the witch's LOS (Line of Sight) (the 3 second timer) and flips the second switch which opens the door and witch escapes
+
+
+Level 3 (Mirrors)
+
+The gate is already open. The flips the switch S1 until the mirrors are at proper orientation , then looks through the mirrors to see the first knight K1, who flips the switch S2 repeatedly until the second set of mirrors are at proper orientation. Then the witch sees the second knight K2 through the other mirrors who flips the switch S3 which brings the bridge out of the lava. Now the witch travels on the bridge to reach the switch S4. This S4 opens both the gates but the gates start closing themselves, so the witch possesses the knights from there so that the knights obstruct the path of closing of the gates so that the witch can escape.
+
+Level 4 (The Bridge)
+
+The gate is already open. The witch climbs on The Bridge (big bridge) and possesses the knight who flips the switch S1 and himself climbs The Bridge. S1 makes The Bridge go up and down (rn the bridge went up). So both witch and knight go up. Now the witch stays on the bridge and sends the knight down the stairs towards S2 switch (going down the stairs also sends him out of witch's LOS). Pressing S2 rotates The Birdge and now the witch can access the switch S3 as well as The Lift. So the witch flips the switch S3, which makes a small bridge appear between the platforms containing S1 and S2 switch, then the witch uses the lift to go down and possess the knight again. The knight now uses the small bridge to go back and flip the switch S1. S1 brings the bridge back down and now the witch can use the bridge to escape.
